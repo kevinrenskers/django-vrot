@@ -7,7 +7,7 @@ setup(
     long_description=open("README.md").read(),
     author="Kevin Renskers",
     author_email="info@mixedcase.nl",
-    url="https://bitbucket.org/bolhoed/django-vrot",
+    url="https://github.com/kevinrenskers/django-vrot",
     packages=[
         "vrot",
     ],

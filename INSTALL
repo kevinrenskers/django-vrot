@@ -1,1 +1,1 @@
-pip install -e hg+https://bitbucket.org/bolhoed/django-vrot#egg=django-vrot
+pip install -e git://github.com/kevinrenskers/django-vrot.git#egg=django-vrot
