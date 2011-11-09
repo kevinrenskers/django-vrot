@@ -92,6 +92,14 @@ from django.template.loader import render_to_string
 from htmlrenderer import render
 
 
+class BodyNotSetException(Exception):
+    pass
+
+
+class NothingToSendException(Exception):
+    pass
+
+
 class Email(object):
     to = None
     subject = None
@@ -265,7 +273,7 @@ class Email(object):
 
         return message
 
-    def send(self, text=None, html=None):
+    def send(self, text=None, html=None, fail_silent=False):
         """
         Creates a message object and sends it.
         """
@@ -274,25 +282,27 @@ class Email(object):
         # Otherwise only if text_body is set.
         send_text = text
         if text is None:
-            send_text = True if self.text_template else (True if self.text_body else False)
+            send_text = bool(self.text_template) or bool(self.text_body)
 
         # We will send html email if html is forced, or if there is a custom html_template.
         # Otherwise only if html_body is set.
         send_html = html
         if html is None:
-            send_html = True if self.html_template else (True if self.html_body else False)
+            send_html = bool(self.html_template) or bool(self.html_body)
 
         if not send_text and not send_html:
-            raise Exception('Nothing to send')
+            if fail_silent:
+                return False
+            raise NothingToSendException('Nothing to send')
 
         # If we are using default templates, then text_body is required when we want to send text email,
         # and html_body is required when we want to send html email
         if not self._custom_templates:
             if send_text and not (self.text_body or self.html_body):
-                raise Exception('When using the default email templates, and you want to send text, you will need to provide a body (either text_body or html_body)')
+                raise BodyNotSetException('When using the default email templates, and you want to send text, you will need to provide a body (either text_body or html_body)')
 
             if send_html and not (self.html_body or self.text_body):
-                raise Exception('When using the default email templates, and you want to send html, you will need to provide a body (either text_body or html_body)')
+                raise BodyNotSetException('When using the default email templates, and you want to send html, you will need to provide a body (either text_body or html_body)')
 
         message = self.create_message(send_text, send_html)
         if message:
