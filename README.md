@@ -10,5 +10,3 @@ A collection of Django templatetags, context processors, middleware, mixins and 
     - fields.py: new model fields, for example an integer field with support for min/max values
 * templatetags
     - vrot.py: templatetags and -filters
-* generic_mail
-    - a better generic email system for Django (needs Python-Markdown)
