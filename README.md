@@ -1,5 +1,8 @@
 A collection of Django templatetags, context processors, middleware, mixins and other reusable hacks.
 
+* admin
+    - actions.py: a new delete action for the admin interface, which does call the delete function per object
+    - admin.py: base classes to subclass from
 * forms
     - patch.py: patches Django forms to set default css classes on inputs (for client-side validation and styling)
     - widgets.py: useful widgets for forms and modelforms
